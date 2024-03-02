@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User save(@PathVariable UserRequestBody entity) {
+    public UserResponse save(@PathVariable UserRequestBody entity) {
         return userService.save(entity);
     }
 

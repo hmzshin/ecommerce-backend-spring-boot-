@@ -12,5 +12,7 @@ public interface UserService {
 
     UserResponse findById(Long id);
 
-    User save(UserRequestBody userRequestBody);
+    User findByIdUser(Long id);
+
+    UserResponse save(UserRequestBody userRequestBody);
 }

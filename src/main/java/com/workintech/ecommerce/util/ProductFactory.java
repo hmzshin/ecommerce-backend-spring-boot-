@@ -1,10 +1,16 @@
 package com.workintech.ecommerce.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
+import com.workintech.ecommerce.dto.ProductImagesResponse;
 import com.workintech.ecommerce.dto.ProductRequestBody;
+import com.workintech.ecommerce.dto.ProductResponse;
 import com.workintech.ecommerce.entity.Category;
 import com.workintech.ecommerce.entity.Product;
+import com.workintech.ecommerce.entity.ProductImages;
 import com.workintech.ecommerce.entity.Store;
 import com.workintech.ecommerce.service.CategoryService;
 import com.workintech.ecommerce.service.StoreService;
@@ -33,6 +39,43 @@ public class ProductFactory {
         product.setStore(store);
 
         return product;
+    }
+
+    public List<ProductResponse> createProductResponse(List<Product> products) {
+
+        List<ProductResponse> response = new ArrayList<>();
+
+        for (Product p : products) {
+            List<ProductImagesResponse> imagesConverted = new ArrayList<>();
+
+            for (ProductImages img : p.getImages()) {
+                imagesConverted.add(ProductImagesResponseFactory.createProductImagesResponse(img));
+            }
+
+            ProductResponse productResponse = new ProductResponse(p.getId(), p.getName(), p.getDescription(),
+                    p.getPrice(),
+                    p.getStock(), p.getRating(), p.getSellCount(), p.getStore().getId(), p.getCategory().getId(),
+                    imagesConverted);
+            response.add(productResponse);
+
+        }
+
+        return response;
+    }
+
+    public ProductResponse createProductResponse(Product p, List<ProductImages> images) {
+
+        List<ProductImagesResponse> imagesConverted = new ArrayList<>();
+
+        for (ProductImages img : images) {
+            imagesConverted.add(ProductImagesResponseFactory.createProductImagesResponse(img));
+        }
+
+        ProductResponse productResponse = new ProductResponse(p.getId(), p.getName(), p.getDescription(), p.getPrice(),
+                p.getStock(), p.getRating(), p.getSellCount(), p.getStore().getId(), p.getCategory().getId(),
+                imagesConverted);
+
+        return productResponse;
     }
 
 }

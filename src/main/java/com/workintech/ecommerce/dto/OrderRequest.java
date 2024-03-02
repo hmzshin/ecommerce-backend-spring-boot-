@@ -1,5 +1,9 @@
 package com.workintech.ecommerce.dto;
 
+import java.util.List;
+
+import com.workintech.ecommerce.entity.PaymentInformation;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,4 +18,8 @@ public class OrderRequest {
     private Long shippingAddressId;
 
     private Long billingAddressId;
+
+    private List<ProductInOrder> products;
+
+    private PaymentInformation paymentInformation;
 }

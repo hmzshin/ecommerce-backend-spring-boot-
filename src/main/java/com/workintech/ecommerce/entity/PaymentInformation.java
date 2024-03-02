@@ -39,10 +39,6 @@ public class PaymentInformation {
     private Double totalPrice;
 
     @OneToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-    @JoinColumn(name = "order_id")
-    private Order order;
-
-    @OneToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
     @JoinColumn(name = "card_id")
     private Card card;
 

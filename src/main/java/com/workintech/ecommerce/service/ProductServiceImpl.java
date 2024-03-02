@@ -18,8 +18,6 @@ import com.workintech.ecommerce.repository.ProductRepository;
 import com.workintech.ecommerce.util.EntityValidations;
 import com.workintech.ecommerce.util.ProductFactory;
 import com.workintech.ecommerce.util.ProductImagesFactory;
-import com.workintech.ecommerce.util.ProductResponseFactory;
-
 import lombok.AllArgsConstructor;
 
 @Service
@@ -33,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductResponse> findAll() {
         List<Product> products = productRepository.findAll();
-        return ProductResponseFactory.createProductResponse(products);
+        return productFactory.createProductResponse(products);
     }
 
     @SuppressWarnings("null")
@@ -60,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
 
         List<ProductImages> images = productImagesService.findAllById(product.getId());
 
-        ProductResponse productResponse = ProductResponseFactory.createProductResponse(product, images);
+        ProductResponse productResponse = productFactory.createProductResponse(product, images);
 
         return productResponse;
     }
@@ -107,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
             products = productRepository.findAllByCategoryAndFilter(pageable, categoryId, filter);
         }
 
-        return ProductResponseFactory.createProductResponse(products);
+        return productFactory.createProductResponse(products);
     }
 
 }

@@ -28,17 +28,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse findById(Long id) {
-        EntityValidations.isIdValid("User", id);
-        @SuppressWarnings("null")
-        User user = userRepository.findById(id).orElseThrow(() -> new NotExistException("User", id));
+        User user = findByIdUser(id);
         return userFactory.createUserResponse(user);
     }
 
     @SuppressWarnings("null")
     @Override
-    public User save(UserRequestBody entity) {
-        User user = userFactory.createUser(entity);
-        return userRepository.save(user);
+    public UserResponse save(UserRequestBody entity) {
+        User user = userRepository.save(userFactory.createUser(entity));
+        return userFactory.createUserResponse(user);
+
+    }
+
+    @SuppressWarnings("null")
+    @Override
+    public User findByIdUser(Long id) {
+        EntityValidations.isIdValid("User", id);
+        return userRepository.findById(id).orElseThrow(() -> new NotExistException("User", id));
     }
 
 }
