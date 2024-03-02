@@ -22,6 +22,7 @@ public class ProductFactory {
 
     private CategoryService categoryService;
     private StoreService storeService;
+    private ProductImagesFactory productImagesFactory;
 
     public Product createProduct(ProductRequestBody productRequestBody) {
         Product product = new Product();
@@ -49,7 +50,7 @@ public class ProductFactory {
             List<ProductImagesResponse> imagesConverted = new ArrayList<>();
 
             for (ProductImages img : p.getImages()) {
-                imagesConverted.add(ProductImagesResponseFactory.createProductImagesResponse(img));
+                imagesConverted.add(productImagesFactory.createProductImagesResponse(img));
             }
 
             ProductResponse productResponse = new ProductResponse(p.getId(), p.getName(), p.getDescription(),
@@ -68,7 +69,7 @@ public class ProductFactory {
         List<ProductImagesResponse> imagesConverted = new ArrayList<>();
 
         for (ProductImages img : images) {
-            imagesConverted.add(ProductImagesResponseFactory.createProductImagesResponse(img));
+            imagesConverted.add(productImagesFactory.createProductImagesResponse(img));
         }
 
         ProductResponse productResponse = new ProductResponse(p.getId(), p.getName(), p.getDescription(), p.getPrice(),

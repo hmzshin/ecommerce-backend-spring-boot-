@@ -27,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
     private ProductFactory productFactory;
     private ProductImagesService productImagesService;
+    private ProductImagesFactory productImagesFactory;
 
     @Override
     public List<ProductResponse> findAll() {
@@ -52,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
 
         for (ProductImagesRequestBody p : entity.getImages()) {
             p.setProductId(product.getId());
-            ProductImages productImages = ProductImagesFactory.createProductImages(p, product);
+            ProductImages productImages = productImagesFactory.createProductImages(p, product);
             productImagesService.save(productImages);
         }
 

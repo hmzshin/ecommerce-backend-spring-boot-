@@ -1,5 +1,8 @@
 package com.workintech.ecommerce.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.workintech.ecommerce.dto.AddressDto;
@@ -19,6 +22,9 @@ public class AddressFactory {
 
         Address a = new Address();
 
+        User u = userService.findByIdUser(addressDto.getUserId());
+        a.setUser(u);
+
         a.setAddress(addressDto.getAddress());
         a.setCity(addressDto.getCity());
         a.setDistrict(addressDto.getDistrict());
@@ -28,10 +34,37 @@ public class AddressFactory {
         a.setSurname(addressDto.getSurname());
         a.setPhone(addressDto.getPhone());
 
-        User u = userService.findByIdUser(addressDto.getUserId());
-        a.setUser(u);
+        return a;
+    }
+
+    public AddressDto createAddressDto(Address address) {
+
+        AddressDto a = new AddressDto();
+
+        a.setAddress(address.getAddress());
+        a.setCity(address.getCity());
+        a.setDistrict(address.getDistrict());
+        a.setName(address.getName());
+        a.setNeighborhood(address.getNeighborhood());
+        a.setTitle(address.getTitle());
+        a.setSurname(address.getSurname());
+        a.setPhone(address.getPhone());
+        a.setUserId(address.getUser().getId());
+        a.setId(address.getId());
 
         return a;
+    }
+
+    public List<AddressDto> createAddressDto(List<Address> addresses) {
+
+        List<AddressDto> addressDtos = new ArrayList<>();
+
+        for (Address a : addresses) {
+            AddressDto addressDto = createAddressDto(a);
+            addressDtos.add(addressDto);
+        }
+
+        return addressDtos;
     }
 
 }

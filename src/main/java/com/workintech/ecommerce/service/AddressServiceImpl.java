@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.workintech.ecommerce.dto.AddressDto;
 import com.workintech.ecommerce.entity.Address;
 import com.workintech.ecommerce.exception.NotExistException;
 import com.workintech.ecommerce.repository.AddressRepository;
+import com.workintech.ecommerce.util.AddressFactory;
 import com.workintech.ecommerce.util.EntityValidations;
 
 import lombok.AllArgsConstructor;
@@ -16,6 +18,8 @@ import lombok.AllArgsConstructor;
 public class AddressServiceImpl implements AddressService {
 
     private AddressRepository addressRepository;
+    private UserService userService;
+    private AddressFactory addressFactory;
 
     @Override
     public List<Address> findAll() {
@@ -34,6 +38,21 @@ public class AddressServiceImpl implements AddressService {
     public Address save(Address address) {
         EntityValidations.isAddressCredentialsValid(address);
         return addressRepository.save(address);
+    }
+
+    @Override
+    public List<AddressDto> findAllByUser(Long userId) {
+        userService.findById(userId);
+        List<Address> addresses = addressRepository.findAllByUser(userId);
+        return addressFactory.createAddressDto(addresses);
+    }
+
+    @Override
+    public AddressDto save(AddressDto addressDto) {
+        Address a = addressFactory.createAddress(addressDto);
+        @SuppressWarnings("null")
+        Address saved = addressRepository.save(a);
+        return addressFactory.createAddressDto(saved);
     }
 
 }
