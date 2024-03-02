@@ -2,6 +2,12 @@ package com.workintech.ecommerce.service;
 
 import java.util.List;
 
+import com.workintech.ecommerce.exception.ConflictException;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.workintech.ecommerce.dto.UserRequestBody;
@@ -16,10 +22,11 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private UserRepository userRepository;
     private UserFactory userFactory;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> findAll() {
@@ -32,10 +39,14 @@ public class UserServiceImpl implements UserService {
         return userFactory.createUserResponse(user);
     }
 
-    @SuppressWarnings("null")
     @Override
     public UserResponse save(UserRequestBody entity) {
-        User user = userRepository.save(userFactory.createUser(entity));
+        userRepository.findByEmail(entity.getEmail())
+                .orElseThrow(() -> new ConflictException("User with given email is already exist"));
+        User u = userFactory.createUser(entity);
+        String encodedPassword = passwordEncoder.encode(u.getPassword());
+        u.setPassword(encodedPassword);
+        User user = userRepository.save(u);
         return userFactory.createUserResponse(user);
 
     }
@@ -45,6 +56,12 @@ public class UserServiceImpl implements UserService {
     public User findByIdUser(Long id) {
         EntityValidations.isIdValid("User", id);
         return userRepository.findById(id).orElseThrow(() -> new NotExistException("User", id));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
 }

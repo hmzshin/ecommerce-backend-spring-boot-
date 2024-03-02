@@ -10,7 +10,6 @@ import com.workintech.ecommerce.dto.ProductImagesRequestBody;
 import com.workintech.ecommerce.dto.ProductRequestBody;
 import com.workintech.ecommerce.dto.UserRequestBody;
 import com.workintech.ecommerce.entity.Address;
-import com.workintech.ecommerce.entity.Card;
 import com.workintech.ecommerce.entity.ProductImages;
 import com.workintech.ecommerce.entity.Store;
 import com.workintech.ecommerce.exception.ValidationException;
