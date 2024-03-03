@@ -33,12 +33,7 @@ public class AddressServiceImpl implements AddressService {
         return addressRepository.findById(id).orElseThrow(() -> new NotExistException("Address", id));
     }
 
-    @SuppressWarnings("null")
-    @Override
-    public Address save(Address address) {
-        EntityValidations.isAddressCredentialsValid(address);
-        return addressRepository.save(address);
-    }
+   
 
     @Override
     public List<AddressDto> findAllByUser(Long userId) {
