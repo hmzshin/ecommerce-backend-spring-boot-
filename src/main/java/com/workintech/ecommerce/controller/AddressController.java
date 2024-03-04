@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.workintech.ecommerce.dto.AddressDto;
-import com.workintech.ecommerce.entity.Address;
 import com.workintech.ecommerce.service.AddressService;
 
 import lombok.AllArgsConstructor;
@@ -29,7 +28,7 @@ public class AddressController {
     }
 
     @PostMapping
-    public Address save(@RequestBody Address address) {
+    public AddressDto save(@RequestBody AddressDto address) {
         return addressService.save(address);
     }
 

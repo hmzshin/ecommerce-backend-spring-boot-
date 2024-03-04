@@ -2,14 +2,15 @@ package com.workintech.ecommerce.util;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.workintech.ecommerce.dto.AddressDto;
 import com.workintech.ecommerce.dto.CardDto;
 import com.workintech.ecommerce.dto.ProductImagesRequestBody;
 import com.workintech.ecommerce.dto.ProductRequestBody;
 import com.workintech.ecommerce.dto.UserRequestBody;
-import com.workintech.ecommerce.entity.Address;
 import com.workintech.ecommerce.entity.ProductImages;
 import com.workintech.ecommerce.entity.Store;
 import com.workintech.ecommerce.exception.ValidationException;
@@ -140,6 +141,43 @@ public class EntityValidations {
 
    }
 
+public static void isCardNoValid(String cardNo){
+
+   checkForString(cardNo, "Card no");
+
+   String cleanedCardNumber = cardNo.replaceAll("\\s|-", "");
+
+   Pattern pattern = Pattern.compile("^\\d{16}$");
+   Matcher matcher = pattern.matcher(cleanedCardNumber);
+
+   if (!matcher.matches()) {
+         throw badRequest("Card no is not valid.");
+      }
+}
+
+public static void isExpireYearValid(Integer year){
+   isNumberValid(year, "Year");
+   if(year < 2024){
+      throw badRequest("Expire year is not valid");
+   }
+}
+
+public static void isExpireMonthValid(Integer month){
+   isNumberValid(month, "Month");
+   if(month<LocalDate.now().getMonthValue() || month > 12){
+      throw badRequest("Expire month is not volid");
+   }
+}
+
+public static void isCcvValid(Integer ccv){
+   isNumberValid(ccv, "Ccv");
+   if(ccv%1000 != 0 || ccv%10000 !=0){
+      throw badRequest("Ccv can be 3 or 4 digits but you provide different digits.");
+   }
+}
+
+
+
    private static void isNumberValid(Double number, String field) {
 
       if (number == null) {
@@ -243,11 +281,28 @@ public class EntityValidations {
 
    }
 
-   public static void isAddressCredentialsValid(Address address) {
+ 
 
+   public static void isAddressCredentialsValid(AddressDto addressDto) {
+      checkForString(addressDto.getTitle(),"Title" );
+      checkForString(addressDto.getCity(),"City" );
+      checkForString(addressDto.getDistrict(),"District" );
+      checkForString(addressDto.getNeighborhood(), "Neighborhood");
+      checkForString(addressDto.getAddress(),"Address" );
+      isNameValid(addressDto.getName());
+      isNameValid(addressDto.getSurname());
+      isPhoneValid(addressDto.getPhone());
+      isIdValid( "User",addressDto.getUserId());
    }
 
    public static void isCardCredentialsValid(CardDto cardDto) {
+
+      isNameValid(cardDto.getNameOnCard());
+      isCardNoValid(cardDto.getCardNo());
+      isExpireMonthValid(cardDto.getExpireMonth());
+      isExpireYearValid(cardDto.getExpireYear());
+      isCcvValid(cardDto.getCcv());
+      isIdValid("User", cardDto.getUserId());
 
    }
 

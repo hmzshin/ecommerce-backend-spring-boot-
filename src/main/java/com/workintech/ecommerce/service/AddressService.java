@@ -13,7 +13,6 @@ public interface AddressService {
 
     Address findById(Long id);
 
-    Address save(Address address);
 
     AddressDto save(AddressDto addressDto);
 
