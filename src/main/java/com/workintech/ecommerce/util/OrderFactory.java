@@ -2,12 +2,9 @@ package com.workintech.ecommerce.util;
 
 import java.time.LocalDateTime;
 
+import com.workintech.ecommerce.dto.*;
 import org.springframework.stereotype.Component;
 
-import com.workintech.ecommerce.dto.OrderRequest;
-import com.workintech.ecommerce.dto.OrderResponse;
-import com.workintech.ecommerce.dto.ProductInOrder;
-import com.workintech.ecommerce.dto.ProductResponse;
 import com.workintech.ecommerce.entity.Address;
 import com.workintech.ecommerce.entity.Order;
 import com.workintech.ecommerce.entity.Product;
@@ -26,6 +23,7 @@ public class OrderFactory {
     private AddressService addressService;
     private UserService userService;
     private ProductFactory productFactory;
+    private AddressFactory addressFactory;
 
     public Order createOrder(OrderRequest orderRequest) {
         Order order = new Order();
@@ -55,8 +53,10 @@ public class OrderFactory {
     public OrderResponse createOrderResponse(Order order) {
         OrderResponse oR = new OrderResponse();
         oR.setStatus("ORDER_MADE");
-        oR.setBillingAddress(order.getBillingAddress());
-        oR.setShippingAddress(order.getShippingAddress());
+        AddressDto billingDto = addressFactory.createAddressDto(order.getBillingAddress());
+        oR.setBillingAddress(billingDto);
+        AddressDto shippingDto = addressFactory.createAddressDto(order.getShippingAddress());
+        oR.setShippingAddress(shippingDto);
         oR.setPaymentInformation(order.getPaymentInformation());
 
         for (Product p : order.getProducts()) {

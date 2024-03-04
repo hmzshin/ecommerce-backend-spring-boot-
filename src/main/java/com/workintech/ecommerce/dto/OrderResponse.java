@@ -3,7 +3,6 @@ package com.workintech.ecommerce.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.workintech.ecommerce.entity.Address;
 import com.workintech.ecommerce.entity.PaymentInformation;
 
 import lombok.AllArgsConstructor;
@@ -17,9 +16,9 @@ public class OrderResponse {
 
     private String status;
 
-    private Address shippingAddress;
+    private AddressDto shippingAddress;
 
-    private Address billingAddress;
+    private AddressDto billingAddress;
 
     private List<ProductResponse> products;
 

@@ -41,8 +41,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserResponse save(UserRequestBody entity) {
-        userRepository.findByEmail(entity.getEmail())
-                .orElseThrow(() -> new ConflictException("User with given email is already exist"));
+        var userExist = userRepository.findByEmail(entity.getEmail());
+        if (userExist.isPresent()) {
+            throw new ConflictException("User with given email is already exist");
+        }
+        EntityValidations.isUserCredentialsValid(entity);
         User u = userFactory.createUser(entity);
         String encodedPassword = passwordEncoder.encode(u.getPassword());
         u.setPassword(encodedPassword);

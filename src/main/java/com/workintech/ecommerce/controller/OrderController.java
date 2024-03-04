@@ -25,7 +25,6 @@ public class OrderController {
     @GetMapping("/{id}")
     public List<OrderResponse> findAllByUser(@PathVariable Long id) {
         return orderService.findAllByUser(id);
-
     }
 
     @PostMapping

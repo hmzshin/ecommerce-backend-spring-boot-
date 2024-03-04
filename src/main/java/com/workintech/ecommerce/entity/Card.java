@@ -39,7 +39,7 @@ public class Card {
 
     @Column(name = "ccv")
     private Integer ccv;
-
+    
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;

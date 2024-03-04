@@ -21,10 +21,10 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     private OrderFactory orderFactory;
 
-    @SuppressWarnings("null")
     @Override
     public OrderResponse makeOrder(OrderRequest orderRequest) {
         Order o = orderFactory.createOrder(orderRequest);
+        @SuppressWarnings("null")
         Order oSaved = orderRepository.save(o);
         return orderFactory.createOrderResponse(oSaved);
     }

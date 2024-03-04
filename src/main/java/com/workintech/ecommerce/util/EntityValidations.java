@@ -19,291 +19,307 @@ import org.springframework.http.HttpStatus;
 
 public class EntityValidations {
 
-   public static final String ID_SMALL_THEN_ZERO = " id can not be less then zero.";
-   public static final String ID_IS_NULL = " id can not be null.";
-   public static final String STRING_IS_NULL = " can not be null.";
-   public static final String STRING_IS_EMPTY = " can not be empty.";
-   public static final String NAME_LESS_THEN = "Name can not be less then or equal to two characters.";
-   public static final String NAME_GREATER_THEN = "Name can not be greater then  20 characters.";
-   public static final String PHONE_IS_NOT_VALID = "Phone number is not valid.";
-   public static final String EMAIL_IS_NOT_VALID = "Email is not valid.";
-   public static final String TAX_IS_NOT_VALID = "Tax no is not valid.";
-   public static final String IBAN_IS_NOT_VALID = "IBAN number is not valid.";
+    public static final String ID_SMALL_THEN_ZERO = " id can not be less then zero.";
+    public static final String ID_IS_NULL = " id can not be null.";
+    public static final String STRING_IS_NULL = " can not be null.";
+    public static final String STRING_IS_EMPTY = " can not be empty.";
+    public static final String NAME_LESS_THEN = "Name can not be less then or equal to two characters.";
+    public static final String NAME_GREATER_THEN = "Name can not be greater then  20 characters.";
+    public static final String PHONE_IS_NOT_VALID = "Phone number is not valid.";
+    public static final String EMAIL_IS_NOT_VALID = "Email is not valid.";
+    public static final String TAX_IS_NOT_VALID = "Tax no is not valid.";
+    public static final String IBAN_IS_NOT_VALID = "IBAN number is not valid.";
 
-   private static ValidationException badRequest(String string) {
-      return new ValidationException(string, HttpStatus.BAD_REQUEST);
-   }
+    private static ValidationException badRequest(String string) {
+        return new ValidationException(string, HttpStatus.BAD_REQUEST);
+    }
 
-   private static void checkForString(String string, String field) {
+    private static void checkForString(String string, String field) {
 
-      if (string == null) {
-         throw badRequest(field + STRING_IS_NULL);
-      }
+        if (string == null) {
+            throw badRequest(field + STRING_IS_NULL);
+        }
 
-      if (string.isEmpty()) {
-         throw badRequest(field + STRING_IS_EMPTY);
-      }
+        if (string.isEmpty()) {
+            throw badRequest(field + STRING_IS_EMPTY);
+        }
 
-   }
+    }
 
-   public static void isIdValid(String field, Long id) {
+    public static void isIdValid(String field, Long id) {
 
-      if (id == null) {
-         throw badRequest(field + ID_IS_NULL);
-      }
+        if (id == null) {
+            throw badRequest(field + ID_IS_NULL);
+        }
 
-      if (id < 0) {
-         throw badRequest(field + ID_SMALL_THEN_ZERO);
-      }
+        if (id < 0) {
+            throw badRequest(field + ID_SMALL_THEN_ZERO);
+        }
 
-   }
+    }
 
-   public static void isNameValid(String name) {
+    public static void isNameValid(String name) {
 
-      checkForString(name, "Name");
+        checkForString(name, "Name");
 
-      if (name.length() <= 2) {
-         throw badRequest(NAME_LESS_THEN);
-      }
+        if (name.length() <= 2) {
+            throw badRequest(NAME_LESS_THEN);
+        }
 
-      if (name.length() > 20) {
-         throw badRequest(NAME_GREATER_THEN);
-      }
+        if (name.length() > 20) {
+            throw badRequest(NAME_GREATER_THEN);
+        }
 
-   }
+    }
 
-   public static void isPhoneValid(String phone) {
+    public static void isSurnameValid(String name) {
 
-      checkForString(phone, "Phone");
+        checkForString(name, "Surname");
 
-      String regex = "^\\+90\\d{10}$";
+        if (name.length() <= 2) {
+            throw badRequest(NAME_LESS_THEN);
+        }
 
-      Pattern pattern = Pattern.compile(regex);
+        if (name.length() > 20) {
+            throw badRequest(NAME_GREATER_THEN);
+        }
 
-      Matcher matcher = pattern.matcher(phone);
+    }
 
-      if (!matcher.matches()) {
+    public static void isPhoneValid(String phone) {
 
-         throw badRequest(PHONE_IS_NOT_VALID);
-      }
+        checkForString(phone, "Phone");
 
-   }
+        String regex = "^\\+90\\d{10}$";
 
-   public static void isEmailValid(String email) {
+        Pattern pattern = Pattern.compile(regex);
 
-      checkForString(email, "Email");
+        Matcher matcher = pattern.matcher(phone);
 
-      String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$";
+        if (!matcher.matches()) {
 
-      Pattern pattern = Pattern.compile(regex);
+            throw badRequest(PHONE_IS_NOT_VALID);
+        }
 
-      Matcher matcher = pattern.matcher(email);
+    }
 
-      if (!matcher.matches()) {
+    public static void isEmailValid(String email) {
 
-         throw badRequest(EMAIL_IS_NOT_VALID);
-      }
+        checkForString(email, "Email");
 
-   }
+        String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$";
 
-   public static void isTaxNoValid(String taxNo) {
+        Pattern pattern = Pattern.compile(regex);
 
-      checkForString(taxNo, "Tax no");
+        Matcher matcher = pattern.matcher(email);
 
-      String regex = "T\\d{4}V\\d{6}";
+        if (!matcher.matches()) {
 
-      Pattern pattern = Pattern.compile(regex);
+            throw badRequest(EMAIL_IS_NOT_VALID);
+        }
 
-      Matcher matcher = pattern.matcher(taxNo);
+    }
 
-      if (!matcher.matches()) {
+    public static void isTaxNoValid(String taxNo) {
 
-         throw badRequest(TAX_IS_NOT_VALID);
-      }
+        checkForString(taxNo, "Tax no");
 
-   }
+        String regex = "T\\d{4}V\\d{6}";
 
-   public static void isIbanValid(String iban) {
+        Pattern pattern = Pattern.compile(regex);
 
-      checkForString(iban, "Tax no");
+        Matcher matcher = pattern.matcher(taxNo);
 
-      iban = iban.replaceAll("\\s", "").toUpperCase();
+        if (!matcher.matches()) {
 
-      String regex = "^TR\\d{22}$";
+            throw badRequest(TAX_IS_NOT_VALID);
+        }
 
-      Pattern pattern = Pattern.compile(regex);
+    }
 
-      Matcher matcher = pattern.matcher(iban);
+    public static void isIbanValid(String iban) {
 
-      if (!matcher.matches()) {
-         throw badRequest(IBAN_IS_NOT_VALID);
-      }
+        checkForString(iban, "Tax no");
 
-   }
+        iban = iban.replaceAll("\\s", "").toUpperCase();
 
-public static void isCardNoValid(String cardNo){
+        String regex = "^TR\\d{22}$";
 
-   checkForString(cardNo, "Card no");
+        Pattern pattern = Pattern.compile(regex);
 
-   String cleanedCardNumber = cardNo.replaceAll("\\s|-", "");
+        Matcher matcher = pattern.matcher(iban);
 
-   Pattern pattern = Pattern.compile("^\\d{16}$");
-   Matcher matcher = pattern.matcher(cleanedCardNumber);
+        if (!matcher.matches()) {
+            throw badRequest(IBAN_IS_NOT_VALID);
+        }
 
-   if (!matcher.matches()) {
-         throw badRequest("Card no is not valid.");
-      }
-}
+    }
 
-public static void isExpireYearValid(Integer year){
-   isNumberValid(year, "Year");
-   if(year < 2024){
-      throw badRequest("Expire year is not valid");
-   }
-}
+    public static void isCardNoValid(String cardNo) {
 
-public static void isExpireMonthValid(Integer month){
-   isNumberValid(month, "Month");
-   if(month<LocalDate.now().getMonthValue() || month > 12){
-      throw badRequest("Expire month is not volid");
-   }
-}
+        checkForString(cardNo, "Card no");
 
-public static void isCcvValid(Integer ccv){
-   isNumberValid(ccv, "Ccv");
-   if(ccv%1000 != 0 || ccv%10000 !=0){
-      throw badRequest("Ccv can be 3 or 4 digits but you provide different digits.");
-   }
-}
+        String cleanedCardNumber = cardNo.replaceAll("\\s|-", "");
 
+        Pattern pattern = Pattern.compile("^\\d{16}$");
+        Matcher matcher = pattern.matcher(cleanedCardNumber);
 
+        if (!matcher.matches()) {
+            throw badRequest("Card no is not valid.");
+        }
+    }
 
-   private static void isNumberValid(Double number, String field) {
+    public static void isExpireYearValid(Integer year) {
+        isNumberValid(year, "Year");
+        if (year < 2024) {
+            throw badRequest("Expire year is not valid");
+        }
+    }
 
-      if (number == null) {
-         throw badRequest(field + STRING_IS_NULL);
-      }
+    public static void isExpireMonthValid(Integer month) {
+        isNumberValid(month, "Month");
+        if (month < LocalDate.now().getMonthValue() || month > 12) {
+            throw badRequest("Expire month is not volid");
+        }
+    }
 
-      if (number < 0) {
-         throw badRequest(field + " can not less then zero.");
-      }
+    public static void isCcvValid(Integer ccv) {
+        isNumberValid(ccv, "Ccv");
+        if (ccv % 1000 != 0 || ccv % 10000 != 0) {
+            throw badRequest("Ccv can be 3 or 4 digits but you provide different digits.");
+        }
+    }
 
-   }
 
-   private static void isNumberValid(Integer number, String field) {
+    private static void isNumberValid(Double number, String field) {
 
-      if (number == null) {
-         throw badRequest(field + STRING_IS_NULL);
-      }
+        if (number == null) {
+            throw badRequest(field + STRING_IS_NULL);
+        }
 
-      if (number < 0) {
-         throw badRequest(field + " can not less then zero.");
-      }
+        if (number < 0) {
+            throw badRequest(field + " can not less then zero.");
+        }
 
-   }
+    }
 
-   private static void isNumberValid(Long number, String field) {
+    private static void isNumberValid(Integer number, String field) {
 
-      if (number == null) {
-         throw badRequest(field + STRING_IS_NULL);
-      }
+        if (number == null) {
+            throw badRequest(field + STRING_IS_NULL);
+        }
 
-      if (number < 0) {
-         throw badRequest(field + " can not less then zero.");
-      }
+        if (number < 0) {
+            throw badRequest(field + " can not less then zero.");
+        }
 
-   }
+    }
 
-   public static void isUrlValid(String url) {
+    private static void isNumberValid(Long number) {
 
-      checkForString(url, "Url");
-      try {
-         new URL(url);
-      } catch (MalformedURLException e) {
-         throw badRequest(e.getMessage());
-      }
+        if (number == null) {
+            throw badRequest("Sell count" + STRING_IS_NULL);
+        }
 
-   }
+        if (number < 0) {
+            throw badRequest("Sell count" + " can not less then zero.");
+        }
 
-   public static void isProductImagesCredentialsValid(ProductImagesRequestBody productImages) {
-      if (productImages == null) {
-         throw badRequest("ProductImages object can not be empty.");
-      }
-      isUrlValid(productImages.getUrl());
-      isNumberValid(productImages.getIndex(), "Index");
-   }
+    }
 
-   public static void isProductImagesCredentialsValid(ProductImages productImages) {
-      if (productImages == null) {
-         throw badRequest("ProductImages object can not be empty.");
-      }
-      isUrlValid(productImages.getUrl());
-      isNumberValid(productImages.getIndex(), "Index");
-   }
+    public static void isUrlValid(String url) {
 
-   public static void isUserCredentialsValid(UserRequestBody user) {
-      isNameValid(user.getName());
-      isNameValid(user.getSurname());
-      isEmailValid(user.getEmail());
-   }
+        checkForString(url, "Url");
+        try {
+            new URL(url);
+        } catch (MalformedURLException e) {
+            throw badRequest(e.getMessage());
+        }
 
-   public static void isStoreCredentialsValid(Store store) {
-      if (store == null) {
-         throw badRequest("Store can not be empty");
-      }
-      isNameValid(store.getName());
-      isTaxNoValid(store.getTaxNo());
-      isIbanValid(store.getBankAccount());
-      isPhoneValid(store.getPhone());
-   }
+    }
 
-   public static void isProductCredentialsValid(ProductRequestBody product) {
-      if (product == null) {
-         throw badRequest("Product" + STRING_IS_EMPTY);
-      }
+    public static void isProductImagesCredentialsValid(ProductImagesRequestBody productImages) {
+        if (productImages == null) {
+            throw badRequest("ProductImages object can not be empty.");
+        }
+        isUrlValid(productImages.getUrl());
+        isNumberValid(productImages.getIndex(), "Index");
+    }
 
-      isNameValid(product.getName());
-      checkForString(product.getDescription(), "Description");
-      isNumberValid(product.getPrice(), "Price");
-      isNumberValid(product.getStock(), "Stock");
-      isNumberValid(product.getRating(), "Rating");
-      isNumberValid(product.getSellCount(), "Sell count");
-      isIdValid("Store", product.getStoreId());
-      isIdValid("Category", product.getCategoryId());
+    public static void isProductImagesCredentialsValid(ProductImages productImages) {
+        if (productImages == null) {
+            throw badRequest("ProductImages object can not be empty.");
+        }
+        isUrlValid(productImages.getUrl());
+        isNumberValid(productImages.getIndex(), "Index");
+    }
 
-      if (product.getImages() == null) {
-         throw badRequest("Images of a product can not be empty");
-      }
+    public static void isUserCredentialsValid(UserRequestBody user) {
+        isNameValid(user.getName());
+        isSurnameValid(user.getSurname());
+        isEmailValid(user.getEmail());
+        Store s = user.getStore();
+        if (s != null) {
+            isStoreCredentialsValid(s);
+        }
+    }
 
-      for (ProductImagesRequestBody productImages : product.getImages()) {
-         isProductImagesCredentialsValid(productImages);
-      }
+    public static void isStoreCredentialsValid(Store store) {
+        if (store == null) {
+            throw badRequest("Store can not be empty");
+        }
+        isNameValid(store.getName());
+        isTaxNoValid(store.getTaxNo());
+        isIbanValid(store.getBankAccount());
+        isPhoneValid(store.getPhone());
+    }
 
-   }
+    public static void isProductCredentialsValid(ProductRequestBody product) {
+        if (product == null) {
+            throw badRequest("Product" + STRING_IS_EMPTY);
+        }
 
- 
+        isNameValid(product.getName());
+        checkForString(product.getDescription(), "Description");
+        isNumberValid(product.getPrice(), "Price");
+        isNumberValid(product.getStock(), "Stock");
+        isNumberValid(product.getRating(), "Rating");
+        isNumberValid(product.getSellCount());
+        isIdValid("Store", product.getStoreId());
+        isIdValid("Category", product.getCategoryId());
 
-   public static void isAddressCredentialsValid(AddressDto addressDto) {
-      checkForString(addressDto.getTitle(),"Title" );
-      checkForString(addressDto.getCity(),"City" );
-      checkForString(addressDto.getDistrict(),"District" );
-      checkForString(addressDto.getNeighborhood(), "Neighborhood");
-      checkForString(addressDto.getAddress(),"Address" );
-      isNameValid(addressDto.getName());
-      isNameValid(addressDto.getSurname());
-      isPhoneValid(addressDto.getPhone());
-      isIdValid( "User",addressDto.getUserId());
-   }
+        if (product.getImages() == null) {
+            throw badRequest("Images of a product can not be empty");
+        }
 
-   public static void isCardCredentialsValid(CardDto cardDto) {
+        for (ProductImagesRequestBody productImages : product.getImages()) {
+            isProductImagesCredentialsValid(productImages);
+        }
 
-      isNameValid(cardDto.getNameOnCard());
-      isCardNoValid(cardDto.getCardNo());
-      isExpireMonthValid(cardDto.getExpireMonth());
-      isExpireYearValid(cardDto.getExpireYear());
-      isCcvValid(cardDto.getCcv());
-      isIdValid("User", cardDto.getUserId());
+    }
 
-   }
+
+    public static void isAddressCredentialsValid(AddressDto addressDto) {
+        checkForString(addressDto.getTitle(), "Title");
+        checkForString(addressDto.getCity(), "City");
+        checkForString(addressDto.getDistrict(), "District");
+        checkForString(addressDto.getNeighborhood(), "Neighborhood");
+        checkForString(addressDto.getAddress(), "Address");
+        isNameValid(addressDto.getName());
+        isSurnameValid(addressDto.getSurname());
+        isPhoneValid(addressDto.getPhone());
+        isIdValid("User", addressDto.getUserId());
+    }
+
+    public static void isCardCredentialsValid(CardDto cardDto) {
+
+        isNameValid(cardDto.getNameOnCard());
+        isCardNoValid(cardDto.getCardNo());
+        isExpireMonthValid(cardDto.getExpireMonth());
+        isExpireYearValid(cardDto.getExpireYear());
+        isCcvValid(cardDto.getCcv());
+        isIdValid("User", cardDto.getUserId());
+
+    }
 
 }

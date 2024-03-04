@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponse save(@PathVariable UserRequestBody entity) {
+    public UserResponse save(@RequestBody UserRequestBody entity) {
         return userService.save(entity);
     }
 

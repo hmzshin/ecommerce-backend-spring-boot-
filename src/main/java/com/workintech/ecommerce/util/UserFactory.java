@@ -29,6 +29,10 @@ public class UserFactory {
         user.setRole(role);
 
         if (role.getCode().equals("store")) {
+            if (userRequestBody.getStore() == null) {
+                throw new ConflictException(
+                        "Please check your payload because you try to save a store user without store information");
+            }
             EntityValidations.isStoreCredentialsValid(userRequestBody.getStore());
             user.setStore(userRequestBody.getStore());
         }
@@ -38,11 +42,12 @@ public class UserFactory {
                     "Please check your payload because you try to save a non store user with store information");
         }
 
+
         return user;
     }
 
     public UserResponse createUserResponse(User user) {
-        UserResponse userResponse = null;
+        UserResponse userResponse;
         if (user.getStore() == null) {
             userResponse = new UserResponse(user.getName(), user.getSurname(), user.getEmail(),
                     user.getRole().getId(), null);
