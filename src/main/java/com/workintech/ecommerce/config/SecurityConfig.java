@@ -33,6 +33,7 @@ public class SecurityConfig {
     AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 
         return new ProviderManager(daoAuthenticationProvider);
     }
@@ -53,6 +54,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(cors -> cors.configurationSource(corsConfiguration()));
         return http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(auth -> {
+            auth.requestMatchers(HttpMethod.POST, "/,login/**").permitAll();
             auth.requestMatchers(HttpMethod.POST, "/users/**").permitAll();
             auth.requestMatchers(HttpMethod.GET, "/users/{id}/**").permitAll();
             auth.requestMatchers(HttpMethod.GET, "/users").hasAnyAuthority("admin");
