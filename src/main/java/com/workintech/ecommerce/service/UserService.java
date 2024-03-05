@@ -16,4 +16,6 @@ public interface UserService {
 
     UserResponse save(UserRequestBody userRequestBody);
 
+    User findByEmail(String email);
+
 }
