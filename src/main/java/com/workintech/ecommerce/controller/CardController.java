@@ -2,12 +2,7 @@ package com.workintech.ecommerce.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.workintech.ecommerce.dto.CardDto;
 import com.workintech.ecommerce.service.CardService;
@@ -29,6 +24,11 @@ public class CardController {
     @PostMapping
     public CardDto save(@RequestBody CardDto card) {
         return cardService.save(card);
+    }
+
+    @DeleteMapping(path = "/delete/{userId}")
+    public CardDto delete(@RequestBody CardDto cardDto, @PathVariable Long userId) {
+        return cardService.delete(cardDto, userId);
     }
 
 }

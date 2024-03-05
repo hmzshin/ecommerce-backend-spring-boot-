@@ -13,7 +13,9 @@ public interface AddressService {
 
     Address findById(Long id);
 
+    AddressDto save(AddressDto addressDto, Long id);
 
-    AddressDto save(AddressDto addressDto);
+    AddressDto delete(AddressDto addressDto, Long userId);
+
 
 }

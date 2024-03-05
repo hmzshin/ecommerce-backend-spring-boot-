@@ -10,4 +10,7 @@ public interface CardService {
 
     CardDto save(CardDto card);
 
+    CardDto delete(CardDto card, Long userId);
+
+
 }

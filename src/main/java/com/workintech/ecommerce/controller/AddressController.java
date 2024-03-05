@@ -1,7 +1,6 @@
 package com.workintech.ecommerce.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.workintech.ecommerce.dto.AddressDto;
 import com.workintech.ecommerce.service.AddressService;
@@ -9,11 +8,6 @@ import com.workintech.ecommerce.service.AddressService;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @AllArgsConstructor
 @RestController
@@ -27,9 +21,15 @@ public class AddressController {
         return addressService.findAllByUser(userId);
     }
 
-    @PostMapping
-    public AddressDto save(@RequestBody AddressDto address) {
-        return addressService.save(address);
+    @PostMapping(path = "/save/{id}")
+    public AddressDto save(@RequestBody AddressDto address, @PathVariable Long id) {
+        return addressService.save(address, id);
+    }
+
+    @DeleteMapping(path = "/delete/{userId}")
+    public AddressDto delete(@RequestBody AddressDto addressDto, @PathVariable Long userId) {
+        return addressService.delete(addressDto, userId);
+
     }
 
 }

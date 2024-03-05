@@ -49,8 +49,12 @@ public class AddressFactory {
         a.setTitle(address.getTitle());
         a.setSurname(address.getSurname());
         a.setPhone(address.getPhone());
-        a.setUserId(address.getUser().getId());
         a.setId(address.getId());
+        if (address.getUser() == null) {
+            a.setUserId(null);
+        } else {
+            a.setUserId(address.getUser().getId());
+        }
 
         return a;
     }

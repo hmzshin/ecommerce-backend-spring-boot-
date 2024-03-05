@@ -42,8 +42,12 @@ public class CardFactory {
         c.setExpireMonth(card.getExpireMonth());
         c.setExpireYear(card.getExpireYear());
         c.setNameOnCard(card.getNameOnCard());
-        c.setUserId(card.getUser().getId());
         c.setId(card.getId());
+        if (card.getUser() == null) {
+            c.setUserId(null);
+        } else {
+            c.setUserId(card.getUser().getId());
+        }
 
         return c;
     }
