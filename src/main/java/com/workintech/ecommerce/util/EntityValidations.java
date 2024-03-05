@@ -6,11 +6,7 @@ import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.workintech.ecommerce.dto.AddressDto;
-import com.workintech.ecommerce.dto.CardDto;
-import com.workintech.ecommerce.dto.ProductImagesRequestBody;
-import com.workintech.ecommerce.dto.ProductRequestBody;
-import com.workintech.ecommerce.dto.UserRequestBody;
+import com.workintech.ecommerce.dto.*;
 import com.workintech.ecommerce.entity.ProductImages;
 import com.workintech.ecommerce.entity.Store;
 import com.workintech.ecommerce.exception.ValidationException;
@@ -185,7 +181,8 @@ public class EntityValidations {
 
     public static void isCcvValid(Integer ccv) {
         isNumberValid(ccv, "Ccv");
-        if (ccv % 1000 != 0 || ccv % 10000 != 0) {
+        int len = String.valueOf(ccv).length();
+        if (!(len == 3 || len == 4)) {
             throw badRequest("Ccv can be 3 or 4 digits but you provide different digits.");
         }
     }
@@ -322,4 +319,8 @@ public class EntityValidations {
 
     }
 
+    public static void isLoginDtoCredentialsValid(LoginDto loginDto) {
+        isEmailValid(loginDto.getEmail());
+        checkForString(loginDto.getPassword(), "Login");
+    }
 }

@@ -59,9 +59,7 @@ public class ProductServiceImpl implements ProductService {
 
         List<ProductImages> images = productImagesService.findAllById(product.getId());
 
-        ProductResponse productResponse = productFactory.createProductResponse(product, images);
-
-        return productResponse;
+        return productFactory.createProductResponse(product, images);
     }
 
     @Override
@@ -75,12 +73,12 @@ public class ProductServiceImpl implements ProductService {
 
         Pageable pageable = PageRequest.of(0, limit, Sort.by("sellCount").descending());
 
-        if (!sort.isEmpty() && sort != null) {
+        if (!sort.isEmpty()) {
             String[] parts = sort.split(":");
             String fieldName = parts[0];
             String direction = parts[1];
 
-            if (direction.toLowerCase().equals("asc")) {
+            if (direction.equalsIgnoreCase("asc")) {
                 pageable = PageRequest.of(0, limit, Sort.by(fieldName).ascending());
 
             } else if (direction.equals("desc")) {
@@ -98,7 +96,7 @@ public class ProductServiceImpl implements ProductService {
             products = productRepository.findAllByFilter(pageable, filter);
         }
 
-        if (categoryId == null && filter.isEmpty() && limit != null) {
+        if (categoryId == null && filter.isEmpty()) {
             products = productRepository.findAllByLimit(pageable);
         }
 

@@ -72,11 +72,9 @@ public class ProductFactory {
             imagesConverted.add(productImagesFactory.createProductImagesResponse(img));
         }
 
-        ProductResponse productResponse = new ProductResponse(p.getId(), p.getName(), p.getDescription(), p.getPrice(),
+        return new ProductResponse(p.getId(), p.getName(), p.getDescription(), p.getPrice(),
                 p.getStock(), p.getRating(), p.getSellCount(), p.getStore().getId(), p.getCategory().getId(),
                 imagesConverted);
-
-        return productResponse;
     }
 
 }
